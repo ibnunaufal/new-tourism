@@ -1,8 +1,10 @@
 import {
   ActivityIndicator,
+  Alert,
   Dimensions,
   FlatList,
   Image,
+  Linking,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -99,8 +101,13 @@ export default function PlaceDetail({ route, navigation }) {
     // console.log(temp)
   }
   return (
-    <View style={{flex:1}}>
-      {loading && <ActivityIndicator size={"large"} style={{flex:1,justifyContent:"center"}} />}
+    <View style={{ flex: 1 }}>
+      {loading && (
+        <ActivityIndicator
+          size={"large"}
+          style={{ flex: 1, justifyContent: "center" }}
+        />
+      )}
       {!loading && (
         <ScrollView style={styles.container}>
           <FlatList
@@ -115,7 +122,7 @@ export default function PlaceDetail({ route, navigation }) {
               <Ionicons name="pin" size={24} color={"black"} />
               <View style={{ justifyContent: "center" }}>
                 <Text style={styles.textField}>
-                  {item.desa} {item.kecamatan}a
+                  {item.desa} {item.kecamatan}
                 </Text>
               </View>
             </View>
@@ -160,23 +167,60 @@ export default function PlaceDetail({ route, navigation }) {
                 </Text>
               </View>
             </View>
-            <View style={{}}>
+            <Pressable
+              style={({ pressed }) => [
+                styles.topField,
+                pressed && { opacity: 0.5 },
+              ]}
+              onPress={() => {
+                Alert.alert(
+                  "Buka di Maps",
+                  "Anda akan diarahkan ke Google Maps",
+                  [
+                    {
+                      text: "Batal",
+                      onPress: () => console.log("Cancel"),
+                      style: "cancel",
+                    },
+                    {
+                      text: "Buka Sekarang",
+                      onPress: () => {
+                        console.log("Update");
+                        // Linking.openURL("market://details?id=com.salatiga.tourism");
+                        Linking.openURL(
+                          item.mapUrl
+                        );
+                        // Linking.openURL("https://wa.me/6281225951789");
+                      },
+                      style: "default",
+                    },
+                  ]
+                );
+              }}
+            >
+              <Ionicons name="map" size={24} color={"black"} />
+              <View style={{ justifyContent: "center" }}>
+                <Text style={[styles.textField, { color: "blue" }]}>
+                  {"Lihat lokasi di Google Maps >"}
+                </Text>
+              </View>
+            </Pressable>
+            <View style={styles.topField}>
               <Text>Tags: {item.tags}</Text>
             </View>
           </View>
-          <View style={styles.mainReview}>
+          {/* <View style={styles.mainReview}>
             <View style={styles.topReview}>
               <Text>Review:</Text>
               <Text>Tambah Review</Text>
             </View>
-            {/* <FlatList renderItem={renderItemReview} data={[0,1,2,3]} /> */}
             {reviews.map((item) => (
               <View>
                 <Text>{item.name}</Text>
                 <Text>{item.message}</Text>
               </View>
             ))}
-          </View>
+          </View> */}
         </ScrollView>
       )}
     </View>
