@@ -1,8 +1,11 @@
 import {
   ActivityIndicator,
+  Alert,
   Dimensions,
   FlatList,
   Image,
+  Linking,
+  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -10,8 +13,9 @@ import {
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { API_URL, getData, getHomeData } from "../utils/http";
+import { API_URL, getAppInfo, getData, getHomeData } from "../utils/http";
 import { useNavigation } from "@react-navigation/native";
+import * as Application from "expo-application";
 
 export default function HomeScreen() {
   const [headline, setHeadline] = useState([]);
@@ -22,6 +26,7 @@ export default function HomeScreen() {
 
   useEffect(() => {
     init();
+    checkVersion();
   }, []);
 
   const HeadlineItem = ({ item }) => {
@@ -74,6 +79,37 @@ export default function HomeScreen() {
     );
   };
 
+  async function checkVersion() {
+    let ver = Application.nativeApplicationVersion;
+    let ver2 = await getAppInfo();
+    ver2 = ver2.data.appVersion
+    if (Platform.OS === "android") {
+      if (ver !== ver2) {
+        Alert.alert(
+          "Update tersedia",
+          "Versi terbaru tersedia, silahkan update aplikasi ini",
+          [
+            {
+              text: 'Nanti',
+              onPress: () => console.log('Cancel'),
+              style: 'cancel'
+            },
+            {
+              text: 'Update Sekarang',
+              onPress: () => {
+                console.log('Update')
+                // Linking.openURL("market://details?id=com.salatiga.tourism");
+                Linking.openURL("https://play.google.com/store/apps/details?id=com.salatiga.tourism");
+                // Linking.openURL("https://wa.me/6281225951789");
+              },
+              style: 'default'
+            }
+          ]
+        );
+      }
+    }
+  }
+
   async function init() {
     setLoading(true);
     const data = await getHomeData();
@@ -85,10 +121,12 @@ export default function HomeScreen() {
   }
 
   return (
-    <ScrollView style={styles.container}>
-      {loading && <ActivityIndicator size={"large"} />}
+    <View style={{ flex: 1 }}>
+      {loading && <View style={{flex:1,justifyContent:"center",alignItems:'center'}}>
+        <ActivityIndicator size={"large"} style={{flex:1,justifyContent:"center"}} />
+      </View>}
       {!loading && (
-        <View style={{ flex: 1 }}>
+        <ScrollView style={styles.container}>
           <View style={styles.top}>
             <Text style={styles.title}>Dolan Salatiga</Text>
             <Image
@@ -132,9 +170,9 @@ export default function HomeScreen() {
               data={acara}
             />
           </View>
-        </View>
+        </ScrollView>
       )}
-    </ScrollView>
+    </View>
   );
 }
 

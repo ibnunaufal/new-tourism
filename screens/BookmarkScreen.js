@@ -42,6 +42,7 @@ export default function BookmarkScreen() {
   async function deleteItem(item) {
     console.log(JSON.stringify(item));
     await deleteBookmark(item);
+    refresh()
   }
 
   const renderItem = ({ item }) => {
@@ -82,7 +83,7 @@ export default function BookmarkScreen() {
   return (
     <View style={{ flex: 1 }}>
       {!loading && <FlatList data={datas} renderItem={renderItem} />}
-      {loading && <ActivityIndicator size={"large"} />}
+      {loading && <ActivityIndicator size={"large"} style={{flex:1,justifyContent:"center"}} />}
     </View>
   );
 }

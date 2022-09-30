@@ -117,7 +117,7 @@ export default function SearchScreen() {
             <Ionicons name="menu" size={24} color={"white"} />
           </Pressable>
         </View>
-        {loading && <ActivityIndicator size={"large"} />}
+        {loading && <ActivityIndicator size={"large"} style={{flex:1,justifyContent:"center"}} />}
         {!loading && (
           <FlatList
             numColumns={2}

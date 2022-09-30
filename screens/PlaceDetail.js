@@ -99,10 +99,10 @@ export default function PlaceDetail({ route, navigation }) {
     // console.log(temp)
   }
   return (
-    <ScrollView style={styles.container}>
-      {loading && <ActivityIndicator size={"large"} />}
+    <View style={{flex:1}}>
+      {loading && <ActivityIndicator size={"large"} style={{flex:1,justifyContent:"center"}} />}
       {!loading && (
-        <View>
+        <ScrollView style={styles.container}>
           <FlatList
             data={images}
             horizontal={true}
@@ -177,9 +177,9 @@ export default function PlaceDetail({ route, navigation }) {
               </View>
             ))}
           </View>
-        </View>
+        </ScrollView>
       )}
-    </ScrollView>
+    </View>
   );
 }
 
