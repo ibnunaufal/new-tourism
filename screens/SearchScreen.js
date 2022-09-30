@@ -108,14 +108,14 @@ export default function SearchScreen() {
           >
             <Ionicons name="search" size={24} color={"white"} />
           </Pressable>
-          <Pressable
+          {/* <Pressable
             style={({ pressed }) => [
               styles.filterButton,
               pressed && styles.pressed,
             ]}
           >
             <Ionicons name="menu" size={24} color={"white"} />
-          </Pressable>
+          </Pressable> */}
         </View>
         {loading && <ActivityIndicator size={"large"} style={{flex:1,justifyContent:"center"}} />}
         {!loading && (

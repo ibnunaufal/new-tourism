@@ -64,7 +64,10 @@ export default function HomeScreen() {
   };
   const AcaraItem = ({ item }) => {
     return (
-      <View style={styles.sliderItem}>
+      <Pressable
+        style={styles.sliderItem}
+        onPress={() => navigation.navigate("AcaraDetailStack", { item: item })}
+      >
         <Image
           source={{ uri: `${API_URL}/img/acara/${item.image}` }}
           style={styles.sliderImage}
@@ -75,14 +78,14 @@ export default function HomeScreen() {
             style={styles.sliderItemSubtitle}
           >{`${item.desa} ${item.kecamatan}`}</Text>
         </View>
-      </View>
+      </Pressable>
     );
   };
 
   async function checkVersion() {
     let ver = Application.nativeApplicationVersion;
     let ver2 = await getAppInfo();
-    ver2 = ver2.data.appVersion
+    ver2 = ver2.data.appVersion;
     if (Platform.OS === "android") {
       if (ver !== ver2) {
         Alert.alert(
@@ -90,20 +93,22 @@ export default function HomeScreen() {
           "Versi terbaru tersedia, silahkan update aplikasi ini",
           [
             {
-              text: 'Nanti',
-              onPress: () => console.log('Cancel'),
-              style: 'cancel'
+              text: "Nanti",
+              onPress: () => console.log("Cancel"),
+              style: "cancel",
             },
             {
-              text: 'Update Sekarang',
+              text: "Update Sekarang",
               onPress: () => {
-                console.log('Update')
+                console.log("Update");
                 // Linking.openURL("market://details?id=com.salatiga.tourism");
-                Linking.openURL("https://play.google.com/store/apps/details?id=com.salatiga.tourism");
+                Linking.openURL(
+                  "https://play.google.com/store/apps/details?id=com.salatiga.tourism"
+                );
                 // Linking.openURL("https://wa.me/6281225951789");
               },
-              style: 'default'
-            }
+              style: "default",
+            },
           ]
         );
       }
@@ -122,9 +127,16 @@ export default function HomeScreen() {
 
   return (
     <View style={{ flex: 1 }}>
-      {loading && <View style={{flex:1,justifyContent:"center",alignItems:'center'}}>
-        <ActivityIndicator size={"large"} style={{flex:1,justifyContent:"center"}} />
-      </View>}
+      {loading && (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <ActivityIndicator
+            size={"large"}
+            style={{ flex: 1, justifyContent: "center" }}
+          />
+        </View>
+      )}
       {!loading && (
         <ScrollView style={styles.container}>
           <View style={styles.top}>

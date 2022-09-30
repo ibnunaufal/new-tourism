@@ -1,5 +1,6 @@
 import {
   ActivityIndicator,
+  Button,
   FlatList,
   Image,
   Pressable,
@@ -82,8 +83,16 @@ export default function BookmarkScreen() {
   };
   return (
     <View style={{ flex: 1 }}>
-      {!loading && <FlatList data={datas} renderItem={renderItem} />}
+      {!loading && datas.length > 0 && <FlatList data={datas} renderItem={renderItem} />}
       {loading && <ActivityIndicator size={"large"} style={{flex:1,justifyContent:"center"}} />}
+      {!loading && datas.length === 0 && <View style={styles.isEmpty}>
+          <Image
+            style={{ width: 100, height: 100, marginBottom: 10 }}
+            source={require("./../assets/image/null.png")}
+          />
+          <Text>Anda Belum Memiliki Bookmark</Text>
+          <Button title="Cari Disini" onPress={()=> {navigation.navigate('Search')}} />
+        </View>}
     </View>
   );
 }
@@ -127,5 +136,10 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: "bold",
+  },
+  isEmpty: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
