@@ -12,29 +12,51 @@ import {
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { API_URL, getAllImages, getAllReview } from "../utils/http";
+import {
+  addBookmark,
+  deleteBookmark,
+  findBookmark,
+  getBookmark,
+} from "../utils/localstorage";
 
 export default function PlaceDetail({ route, navigation }) {
   const { item } = route.params;
   const [reviews, setReviews] = useState([]);
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [isSaved, setIsSaved] = useState(false)
+  const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {
     getImages();
+    async function find() {
+      let x = await findBookmark(item.id);
+      console.log(x);
+      setIsSaved(x);
+    }
+    find();
   }, []);
-  useLayoutEffect(()=>{
+  useLayoutEffect(() => {
     navigation.setOptions({
-        headerRight: () => (
-          <Pressable
-            onPress={() => console.log('pressed')}
-          >
-            {isSaved&&<Ionicons name="bookmark" size={24} color={'black'} />}
-            {!isSaved&&<Ionicons name="bookmark-outline" size={24} color={'black'} />}
-          </Pressable>
-        ),
-      });
-  })
+      headerRight: () => (
+        <Pressable onPress={() => bookmarkPress()}>
+          {isSaved && <Ionicons name="bookmark" size={24} color={"black"} />}
+          {!isSaved && (
+            <Ionicons name="bookmark-outline" size={24} color={"black"} />
+          )}
+        </Pressable>
+      ),
+    });
+  });
+  function bookmarkPress() {
+    console.log("pre");
+    if (isSaved) {
+      deleteBookmark(item);
+      setIsSaved(false);
+    } else {
+      addBookmark(item);
+      setIsSaved(true);
+    }
+  }
   const renderItemReview = ({ item }) => {
     return (
       <View>
@@ -45,12 +67,20 @@ export default function PlaceDetail({ route, navigation }) {
   };
   const renderItemImage = ({ item }) => {
     return (
-      <View style={styles.sliderItem}>
+      <Pressable
+        style={styles.sliderItem}
+        onPress={() =>
+          navigation.navigate("ImageDetail", {
+            image: item.image,
+            type: "acara",
+          })
+        }
+      >
         <Image
           source={{ uri: `${API_URL}img/tempat/${item.image}` }}
           style={styles.sliderImage}
         />
-      </View>
+      </Pressable>
     );
   };
   async function getImages() {
@@ -85,7 +115,7 @@ export default function PlaceDetail({ route, navigation }) {
               <Ionicons name="pin" size={24} color={"black"} />
               <View style={{ justifyContent: "center" }}>
                 <Text style={styles.textField}>
-                  {item.desa} {item.kecamatan}
+                  {item.desa} {item.kecamatan}a
                 </Text>
               </View>
             </View>

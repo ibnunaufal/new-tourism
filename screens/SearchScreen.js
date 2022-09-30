@@ -147,7 +147,8 @@ export default function SearchScreen() {
 
   async function search() {
     setLoading(true);
-    let res = await getPage(page, limit, cari, tag);
+    let res = await getPage(0, limit, cari, tag);
+    setPage(1)
     setData(res.data.data);
     setLastPage(res.data.last_page);
     setTotalData(res.data.total)

@@ -11,6 +11,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import PlaceDetail from "./screens/PlaceDetail";
 import AcaraScreen from "./screens/AcaraScreen";
 import AcaraDetailScreen from "./screens/AcaraDetailScreen";
+import LoginScreen from "./screens/LoginScreen";
+import RegisterScreen from "./screens/RegisterScreen";
+import ImageDetail from "./screens/ImageDetail";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator()
@@ -45,9 +48,10 @@ export default function App() {
           />
           <Tab.Screen
             name="Bookmark"
-            component={BookmarkScreen}
+            component={BookmarkStack}
             options={{
               title: "Bookmark",
+              headerShown: false,
               tabBarLabel: "Bookmark",
               tabBarIcon: ({ color, size }) => (
                 <Ionicons name="bookmark" size={size} color={color} />
@@ -56,8 +60,9 @@ export default function App() {
           />
           <Tab.Screen
             name="Profile"
-            component={ProfileScreen}
+            component={ProfileStack}
             options={{
+              headerShown: false,
               tabBarIcon: ({ color, size }) => (
                 <Ionicons name="person" size={size} color={color} />
               ),
@@ -92,6 +97,9 @@ function HomeStack(){
       <Stack.Screen name="AcaraDetailStack" component={AcaraDetailScreen} options={{
         title: 'Detail Acara'
       }} />
+      <Stack.Screen name="ImageDetail" component={ImageDetail} options={{
+        title: 'Detail'
+      }} />
     </Stack.Navigator>
   )
 }
@@ -104,6 +112,41 @@ function SearchStack(){
       }} />
       <Stack.Screen name="SearchDetailStack" component={PlaceDetail} options={{
         title: 'Detail'
+      }} />
+      <Stack.Screen name="ImageDetail" component={ImageDetail} options={{
+        title: 'Detail'
+      }} />
+    </Stack.Navigator>
+  )
+}
+
+function BookmarkStack(){
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="BookmarkStack" component={BookmarkScreen} options={{
+        title: 'Bookmark'
+      }} />
+      <Stack.Screen name="BookmarkDetailStack" component={PlaceDetail} options={{
+        title: 'Detail'
+      }} />
+      <Stack.Screen name="ImageDetail" component={ImageDetail} options={{
+        title: 'Detail'
+      }} />
+    </Stack.Navigator>
+  )
+}
+
+function ProfileStack(){
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="ProfileStack" component={ProfileScreen} options={{
+        title: 'Profile'
+      }} />
+      <Stack.Screen name="Login" component={LoginScreen} options={{
+        title: 'Login'
+      }} />
+      <Stack.Screen name="Register" component={RegisterScreen} options={{
+        title: 'Register'
       }} />
     </Stack.Navigator>
   )
