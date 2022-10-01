@@ -16,6 +16,7 @@ import React, { useEffect, useState } from "react";
 import { API_URL, getAppInfo, getData, getHomeData } from "../utils/http";
 import { useNavigation } from "@react-navigation/native";
 import * as Application from "expo-application";
+import { APPVERSION } from "../utils/version";
 
 export default function HomeScreen() {
   const [headline, setHeadline] = useState([]);
@@ -83,14 +84,14 @@ export default function HomeScreen() {
   };
 
   async function checkVersion() {
-    let ver = Application.nativeApplicationVersion;
+    let ver = APPVERSION //Application.nativeApplicationVersion;
     let ver2 = await getAppInfo();
     ver2 = ver2.data.appVersion;
     if (Platform.OS === "android") {
       if (ver !== ver2) {
         Alert.alert(
           "Update tersedia",
-          "Versi terbaru tersedia, silahkan update aplikasi ini",
+          `Versi terbaru tersedia(${ver2}), silahkan update aplikasi ini. Versi saat ini ${ver}`,
           [
             {
               text: "Nanti",

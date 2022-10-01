@@ -1,6 +1,7 @@
 import {
   ActivityIndicator,
   Button,
+  Dimensions,
   FlatList,
   Image,
   Pressable,
@@ -31,7 +32,9 @@ export default function BookmarkScreen() {
       setDatas(x);
       setLoading(false);
     }
-    init();
+    if(isFocused){
+      init();
+    }
   }, [isFocused]);
   async function refresh() {
     setLoading(true);
@@ -43,7 +46,7 @@ export default function BookmarkScreen() {
   async function deleteItem(item) {
     console.log(JSON.stringify(item));
     await deleteBookmark(item);
-    refresh()
+    refresh();
   }
 
   const renderItem = ({ item }) => {
@@ -83,16 +86,52 @@ export default function BookmarkScreen() {
   };
   return (
     <View style={{ flex: 1 }}>
-      {!loading && datas.length > 0 && <FlatList data={datas} renderItem={renderItem} />}
-      {loading && <ActivityIndicator size={"large"} style={{flex:1,justifyContent:"center"}} />}
-      {!loading && datas.length === 0 && <View style={styles.isEmpty}>
-          <Image
-            style={{ width: 100, height: 100, marginBottom: 10 }}
-            source={require("./../assets/image/null.png")}
-          />
-          <Text>Anda Belum Memiliki Bookmark</Text>
-          <Button title="Cari Disini" onPress={()=> {navigation.navigate('Search')}} />
-        </View>}
+      {loading && (
+        <ActivityIndicator
+          size={"large"}
+          style={{ flex: 1, justifyContent: "center" }}
+        />
+      )}
+      {!loading && (
+        <>
+          {datas && (
+            <FlatList
+              data={datas}
+              renderItem={renderItem}
+              ListEmptyComponent={
+                <View style={styles.isEmpty}>
+                  <Image
+                    style={{ width: 100, height: 100, marginBottom: 10 }}
+                    source={require("./../assets/image/null.png")}
+                  />
+                  <Text>Anda Belum Memiliki Bookmark</Text>
+                  <Button
+                    title="Tambahkan Disini"
+                    onPress={() => {
+                      navigation.navigate("Search");
+                    }}
+                  />
+                </View>
+              }
+            />
+          )}
+          {
+            datas === null && <View style={{flex:1, justifyContent:"center",alignItems:'center'}}>
+            <Image
+              style={{ width: 100, height: 100, marginBottom: 10 }}
+              source={require("./../assets/image/null.png")}
+            />
+            <Text>Anda Belum Memiliki Bookmark</Text>
+            <Button
+              title="Tambahkan Disini"
+              onPress={() => {
+                navigation.navigate("Search");
+              }}
+            />
+          </View>
+          }
+        </>
+      )}
     </View>
   );
 }
@@ -139,6 +178,7 @@ const styles = StyleSheet.create({
   },
   isEmpty: {
     flex: 1,
+    marginTop: Dimensions.get('window').height / 3,
     justifyContent: "center",
     alignItems: "center",
   },

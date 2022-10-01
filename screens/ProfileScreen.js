@@ -1,11 +1,36 @@
-import { Button, Image, Pressable, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { Alert, Button, Image, Pressable, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { useIsFocused, useNavigation, useRoute } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
+import { APPVERSION } from "../utils/version";
+import { getProfile, logoutProfile } from "../utils/localstorage";
 
-export default function ProfileScreen() {
+export default function ProfileScreen({route}) {
   const navigation = useNavigation();
+  
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [profile, setProfile] = useState([{
+    name:'',
+    email:''
+  }])
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    async function init() {
+      let x = await getProfile();
+      console.log(x)
+      if(x===null){
+        setIsLoggedIn(false)
+      }else{
+        setProfile(x)
+        setIsLoggedIn(true)
+      }
+    }
+    if(isFocused){
+      init()
+    }
+    // init();
+    console.log('focus '+isFocused)
+  }, [isFocused]);
 
   return (
     <View style={styles.container}>
@@ -16,7 +41,9 @@ export default function ProfileScreen() {
             source={require("./../assets/image/null.png")}
           />
           <Text>Anda Belum Login</Text>
-          <Button title="Login" onPress={()=> {navigation.navigate('Login')}} />
+          <View style={{margin: 10}}>
+            <Button title="Login" onPress={()=> {navigation.navigate('Login')}} />
+          </View>
           <Button title="Register" onPress={()=> {navigation.navigate('Register')}} />
         </View>
       )}
@@ -28,7 +55,7 @@ export default function ProfileScreen() {
               source={require("./../assets/image/logo-salatiga.png")}
             />
             <Text style={styles.appName}>Dolan Salatiga</Text>
-            <Text>versi 0.0.1</Text>
+            <Text>versi {APPVERSION}</Text>
           </View>
           <View style={styles.bottomView}>
             <Pressable
@@ -36,7 +63,7 @@ export default function ProfileScreen() {
             >
               <Ionicons name="person" size={24} color={"white"} />
               <View style={styles.textView}>
-                <Text style={styles.text}>Nama</Text>
+                <Text style={styles.text}>{profile[0].name}</Text>
               </View>
             </Pressable>
             <Pressable
@@ -44,11 +71,33 @@ export default function ProfileScreen() {
             >
               <Ionicons name="mail" size={24} color={"white"} />
               <View style={styles.textView}>
-                <Text style={styles.text}>Email</Text>
+                <Text style={styles.text}>{profile[0].email}</Text>
               </View>
             </Pressable>
             <Pressable
               style={({ pressed }) => [styles.item, pressed && styles.pressed]}
+              onPress={() => {
+                Alert.alert(
+                  "Logout",
+                  "Anda akan keluar dari akun ini?",
+                  [
+                    {
+                      text: "Batal",
+                      onPress: () => console.log("Cancel"),
+                      style: "cancel",
+                    },
+                    {
+                      text: "Keluar",
+                      onPress: () => {
+                        logoutProfile()
+                        setIsLoggedIn(false)
+                        setProfile([])
+                      },
+                      style: "default",
+                    },
+                  ]
+                );
+              }}
             >
               <Ionicons name="exit" size={24} color={"white"} />
               <View style={styles.textView}>

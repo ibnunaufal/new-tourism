@@ -74,7 +74,7 @@ export default function PlaceDetail({ route, navigation }) {
         onPress={() =>
           navigation.navigate("ImageDetail", {
             image: item.image,
-            type: "acara",
+            type: "tempat",
           })
         }
       >
@@ -114,7 +114,7 @@ export default function PlaceDetail({ route, navigation }) {
             data={images}
             horizontal={true}
             renderItem={renderItemImage}
-            style={{ width: "100%" }}
+            style={{ width: "100%", }}
           />
           <View style={styles.content}>
             <Text style={styles.title}>{item.name}</Text>
@@ -269,14 +269,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   sliderItem: {
-    width: Dimensions.get("window").width / 2 - 20,
-    height: Dimensions.get("window").height / 3,
+    // width: Dimensions.get("screen").width / 2,
+    // height: Dimensions.get("screen").height / 3,
     borderRadius: 10,
   },
   sliderImage: {
     flex: 1,
     borderRadius: 10,
-    width: Dimensions.get("window").width - 40,
-    height: Dimensions.get("window").height / 3,
+    width: Dimensions.get("screen").width - 40,
+    height: Dimensions.get("screen").height / 3,
+    backgroundColor: 'red'
   },
 });

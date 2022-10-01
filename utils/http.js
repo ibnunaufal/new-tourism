@@ -103,7 +103,7 @@ export async function doRegister(name, email, password) {
 }
 
 export async function getAppInfo(){
-  // let url = "api/api/getInfo?id=com.salatiga.tourism"
-  let url = "api/getInfo?id=id.co.solusinegeri.katalis"
+  let url = "api/getInfo?id=com.salatiga.tourism"
+  // let url = "api/getInfo?id=id.co.solusinegeri.katalis"
   return await getData(url)
 }

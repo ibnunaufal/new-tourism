@@ -35,12 +35,17 @@ export default function AcaraDetailScreen({ route, navigation }) {
   };
   const renderItemImage = ({ item }) => {
     return (
-      <View style={styles.sliderItem}>
+      <Pressable style={styles.sliderItem} onPress={() =>
+        navigation.navigate("ImageDetail", {
+          image: item.image,
+          type: "acara",
+        })
+      } >
         <Image
           source={{ uri: `${API_URL}img/acara/${item.image}` }}
           style={styles.sliderImage}
         />
-      </View>
+      </Pressable>
     );
   };
   async function getImages() {
@@ -207,8 +212,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   sliderItem: {
-    width: Dimensions.get("window").width / 2 - 20,
-    height: Dimensions.get("window").height / 3,
+    // width: Dimensions.get("window").width / 2 - 20,
+    // height: Dimensions.get("window").height / 3,
     borderRadius: 10,
   },
   sliderImage: {

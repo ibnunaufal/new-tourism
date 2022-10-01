@@ -1,0 +1,1 @@
+export const APPVERSION = "2.0.2"

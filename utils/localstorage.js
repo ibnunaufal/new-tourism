@@ -99,6 +99,11 @@ export async function getProfile() {
   let initObject = await getProfleObject();
   return initObject;
 }
+export async function logoutProfile() {
+  await AsyncStorage.clear()
+  // let initObject = await getProfleObject();
+  // return initObject;
+}
 
 // let example = {
 //     fav: [{
